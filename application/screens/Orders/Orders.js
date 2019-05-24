@@ -27,7 +27,7 @@ export default class Orders extends Component {
         const {search} = this.state;
 
         if(!search){ 
-            //refernecia base datos firebase
+            //referencia base datos firebase
             this.refOrders = firebase.database().ref().child('pedidos');
         }else{
              //refernecia base datos firebase
@@ -83,14 +83,20 @@ export default class Orders extends Component {
     renderPedidos(pedido) {
         return (
             //cada vez que exista un pedido muestra la información
-            <ListItem
-                containerStyle={styles.item}
-                titleStyle={styles.title}
-                title={`${pedido.name}`}
-                // leftAvatar={{source: this.state.pedido_logo}}  
-                //onPress={() => this.pedidosDetail(pedido)}
-                rightIcon={{ name: 'arrow-right', type: 'font-awesome', style: styles.listIconStyle }}
-            />
+            // <ListItem
+            //     containerStyle={styles.item}
+            //     titleStyle={styles.title}
+            //     title={`${pedido.name}`}
+            //     // leftAvatar={{source: this.state.pedido_logo}}  
+            //     //onPress={() => this.pedidosDetail(pedido)}
+            //     rightIcon={{ name: 'arrow-right', type: 'font-awesome', style: styles.listIconStyle }}
+            // />
+            <View style={styles.item}>
+                                <Text style={styles.text}>
+                                    {pedido.id}       Línea de pedido: 5   
+                                </Text>
+                                <Text>Fecha entregado: 15/05/19    Fecha creación: 13/05/19</Text>
+                            </View>
         )
 
     }
@@ -156,32 +162,34 @@ export default class Orders extends Component {
             );
         }
 
+        
         return (
             
                 <BackgroundImage style={styles.backgroundContainer}>
                     <ScrollView>
                     {searchBar}
 
-                    {/* <FlatList 
+                    <FlatList 
                         data={pedidos}
                         renderItem={(data) => this.renderPedidos(data.item)}
                         keyExtractor={(data) => data.id}
-                    /> */}
-                    <FlatList 
+                    />
+                    {/* <FlatList 
                         data={pedidos}
                         // numColumns={3}
                         keyExtractor={(data) => data.id}
-                        renderItem={({ item }) => {
-                            return(
-                            <View style={styles.item}>
-                                <Text style={styles.text}>
-                                    {item.id}       Línea de pedido: 5   
-                                </Text>
-                                <Text>Fecha realizado: 15/05/19    Fecha creación: 13/05/19</Text>
-                            </View>
-                        );
+                        renderItem={({ data }) => { this.renderPedidos(data.item)
+                            console.log("La id del pedido es "+ data.id)
+                        //     return(
+                        //     <View style={styles.item}>
+                        //         <Text style={styles.text}>
+                        //             {item.id}       Línea de pedido: 5   
+                        //         </Text>
+                        //         <Text>Fecha realizado: 15/05/19    Fecha creación: 13/05/19</Text>
+                        //     </View>
+                        // );
                         }}
-                    />
+                    /> */}
                     </ScrollView>
                     <OrdersAddButton addOrders={this.addOrders.bind(this)} />
                 </BackgroundImage>

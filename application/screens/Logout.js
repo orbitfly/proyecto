@@ -16,4 +16,4 @@ export default class Logout extends Component{
     render(){
         return null;
     }
-}
+}     

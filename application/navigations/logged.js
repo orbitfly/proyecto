@@ -1,9 +1,13 @@
 import React from 'react';
+import {Platform} from 'react-native';
 import OrdersScreen from "../screens/Orders/Orders";
 import LogoutScreen from "../screens/Logout";
 import AddOrderScreen from "../screens/Orders/AddOrder";
+import NotificationScreen from "../screens/Notification";
+import SettingScreen from "../screens/Setting";
 import {createDrawerNavigator, createStackNavigator} from "react-navigation";
 import Icon from 'react-native-vector-icons/FontAwesome';
+// import Icon from 'react-native-vector-icons/Ionicons';
 
 const navigationOptions = {
     navigationOptions:{
@@ -58,6 +62,34 @@ const OrdersScreenStack = createStackNavigator(
     navigationOptions
 );
 
+const NotificationScreenStack = createStackNavigator(
+    {
+        NotificationScreen:{
+            screen: NotificationScreen,
+            navigationOptions:({navigation})=>({
+                title: 'Notificaciones',
+                headerRight: rightIcon(navigation, 'home'),
+                headerLeft: leftIcon(navigation, 'bars')
+            })
+        }
+    },
+    navigationOptions
+);
+
+const SettingScreenStack = createStackNavigator(
+    {
+        SettingScreen:{
+            screen: SettingScreen,
+            navigationOptions:({navigation})=>({
+                title: 'Ajustes',
+                headerRight: rightIcon(navigation, 'home'),
+                headerLeft: leftIcon(navigation, 'bars')
+            })
+        }
+    },
+    navigationOptions
+);
+
 const logoutScreenStack = createStackNavigator({
     LogoutScreen: {
         screen: LogoutScreen,
@@ -76,11 +108,25 @@ export default createDrawerNavigator(
                 drawerIcon: ({tintColor}) => (<Icon name="home" size={24} style= {{color:tintColor}}/>),
             })
         },
+        NotificationScreen:{
+            screen: NotificationScreenStack,
+            navigationOptions: ({navigation}) => ({
+                drawerLabel: 'Notificaciones',
+                drawerIcon: ({tintColor}) => (<Icon name={"bell"} size={24} style= {{color:tintColor}}/>),
+            })
+        },
+        SettingScreen:{
+            screen: SettingScreenStack,
+            navigationOptions: ({navigation}) => ({
+                drawerLabel: 'Ajustes',
+                drawerIcon: ({tintColor}) => (<Icon name={"sliders"} size={24} style= {{color:tintColor}}/>),
+            })
+        },
         LogoutScreen: {
             screen: logoutScreenStack,
             navigationOptions: ({navigation}) => ({
                 drawerLabel: 'Cerrar sesión',
-                drawerIcon: ({tintColor}) => (<Icon name="sign-out" size={24} style= {{color:tintColor}}/>),
+                drawerIcon: ({tintColor}) => (<Icon name={"sign-out"} size={24} style= {{color:tintColor}}/>),
             })
         }
     },

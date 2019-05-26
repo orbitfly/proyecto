@@ -3,6 +3,7 @@ import {Platform} from 'react-native';
 import OrdersScreen from "../screens/Orders/Orders";
 import LogoutScreen from "../screens/Logout";
 import AddOrderScreen from "../screens/Orders/AddOrder";
+import OrderDetailScreen from "../screens/Orders/OrderDetail";
 import NotificationScreen from "../screens/Notification";
 import SettingScreen from "../screens/Setting";
 import {createDrawerNavigator, createStackNavigator} from "react-navigation";
@@ -56,6 +57,14 @@ const OrdersScreenStack = createStackNavigator(
                 title: 'Añadir pedido',
                 headerRight: rightIcon(navigation, 'home'),
                 headerLeft: leftIcon(navigation, 'bars')
+            })
+        },
+        OrderDetail: {
+            screen: OrderDetailScreen,
+            navigationOptions: ({navigation}) => ({
+                title: 'Detalles del pedido',
+                headerRight: rightIcon(navigation, 'home'),
+                headerLeft: leftIcon(navigation, 'bars') 
             })
         },
     },

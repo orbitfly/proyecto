@@ -1,4 +1,6 @@
 import React from 'react';
+import {Assets} from 'expo';
+Assets;
 import { StyleSheet, Image, Text, View } from 'react-native';
 import firebaseConfig from './application/utils/firebase';
 import * as firebase from 'firebase';

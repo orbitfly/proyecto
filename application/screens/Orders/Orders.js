@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import BackgroundImage from '../../components/BackgroundImage';
 import PreLoader from '../../components/PreLoader';
-import { StyleSheet, FlatList, View, Image , Text, ScrollView} from 'react-native';      //Desarrollar lista para definir los items
+import { StyleSheet, FlatList, View, Image , Text, ScrollView, TouchableOpacity} from 'react-native';      //Desarrollar lista para definir los items
 import { ListItem, SearchBar } from 'react-native-elements';
 import * as firebase from 'firebase';
 import { NavigationActions } from 'react-navigation';
@@ -13,11 +13,11 @@ import GridView from 'react-native-super-grid';
 export default class Orders extends Component {
     constructor() {
         super();
+        this.userId = firebase.auth().currentUser.uid;
         //estado mínimo 
         this.state = {
             pedidos: [],
             loaded: false,
-            pedido_logo: require('../../../assets/images/box.png'),
             search: ''
         };
     } 
@@ -28,7 +28,8 @@ export default class Orders extends Component {
 
         if(!search){ 
             //referencia base datos firebase
-            this.refOrders = firebase.database().ref().child('pedidos');
+            console.log('id user: ' + this.userId);
+            this.refOrders = firebase.database().ref().child('order/'+this.userId);
         }else{
              //refernecia base datos firebase
             this._filterOrders(search);
@@ -44,9 +45,10 @@ export default class Orders extends Component {
             snapshot.forEach(row => {
                 pedidos.push({
                     id:row.key,
-                    name: row.val().name,
-                    type: row.val().type,               //tipo de café: descafeinado, cafeinado...
-                    quantity: row.val().quantity,
+                    date_delivery: row.val().date_delivery,
+                    date_order: row.val().date_order,
+                    //type: row.val().type,               //tipo de café: descafeinado, cafeinado...
+                    quantity: row.val().qty_total,
                     description: row.val().description
                 })
             });
@@ -59,7 +61,7 @@ export default class Orders extends Component {
         })
     }
 
-    //formulario dar de alta nuevo pedido
+    // dar de alta nuevo pedido
     addOrders() {
         const navigateAction = NavigationActions.navigate({
             routeName: 'AddOrder'
@@ -75,7 +77,14 @@ export default class Orders extends Component {
     //     });
     //     this.props.navigation.dispatch(navigateAction);
     // }
-
+    pedidosDetail(pedido) {
+        console.log("Entra")
+        const navigateAction = NavigationActions.navigate({
+            routeName: 'OrderDetail',
+            params:{pedido}
+        });
+        this.props.navigation.dispatch(navigateAction);
+    }
 
 
 
@@ -91,12 +100,16 @@ export default class Orders extends Component {
             //     //onPress={() => this.pedidosDetail(pedido)}
             //     rightIcon={{ name: 'arrow-right', type: 'font-awesome', style: styles.listIconStyle }}
             // />
-            <View style={styles.item}>
-                                <Text style={styles.text}>
-                                    {pedido.id}       Línea de pedido: 5   
-                                </Text>
-                                <Text>Fecha entregado: 15/05/19    Fecha creación: 13/05/19</Text>
-                            </View>
+            // <View style={styles.item} onPress={this.pedidosDetail.bind(pedido)}>
+            <TouchableOpacity style={styles.item} onPress={() => this.pedidosDetail(pedido)}> 
+                <Text style={styles.text} >
+                    {pedido.id}    
+                </Text>
+                <Text>Cantidad total: {pedido.quantity}</Text>
+                <Text>Fecha entregado: {pedido.date_delivery} </Text>
+                <Text>Fecha creación: {pedido.date_order}  </Text> 
+            {/* </View> */}
+            </TouchableOpacity>
         )
 
     }
@@ -128,8 +141,12 @@ export default class Orders extends Component {
     }
 
     _filterOrders(search){
+        // var ref = firebase.database().ref("pedidos");
+        // ref.orderByKey().on("child_added", function(snapshot) {
+        // console.log(snapshot.key);
+        // });
         this.refOrders = firebase.database().ref().child('pedidos')
-            .orderByChild('name')   //ordenar por el nombre del pedido
+            .orderByKey()   //ordenar por el nombre del pedido
             .startAt(search)        //empiece por search
             .endAt(`${search}\uf8ff`);          //finalice por todo lo que empieza la búsqueda
     }
@@ -225,11 +242,11 @@ const styles = StyleSheet.create({
         
       },
       item: {
-        alignItems: "center",
+        alignItems: "flex-start",
         backgroundColor: 'rgba(206, 206, 206, 0.6)',
         flexGrow: 1,
         margin: 1,
-        padding: 5,
+        padding: 15,
         flexBasis: 0,
       },
       text: {

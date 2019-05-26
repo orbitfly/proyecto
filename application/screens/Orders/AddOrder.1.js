@@ -6,12 +6,12 @@ import * as firebase from 'firebase';
 import Slider from "react-native-slider";
 import cafe_gran_bouquet from "../../../assets/images/cafe_gran_bouquet.png";
 import cafe_natural_supremo from "../../../assets/images/cafe_natural_supremo.png";
-import cafe_descafeinado from "../../../assets/images/cafe_descafeinado.png";
 import sm_alta_gama from "../../../assets/images/sm_alta-gama.png";
 import sm_alta_gama_marron from "../../../assets/images/sm_alta-gama-marron.png";
 import sm_gama_descafeinado from "../../../assets/images/sm_gama-descafeinado.png";
 import sm_guor from "../../../assets/images/sm_guor.png";
 import sm_guor_verde_oscuro from "../../../assets/images/sm_guor-verde-oscuro.png";
+import cafedescafeinado from "../../../assets/images/cafedescafeinado.png";
 import sm_sin_titulo_1001440010 from "../../../assets/images/sm_sin-titulo-1001440010.jpeg";
 import sm_sin_titulo_1001340020 from "../../../assets/images/sm_sin-titulo-1001340020.png";
 import sm_sin_titulo_1000940060 from "../../../assets/images/sm_sin-titulo-1000940060.png";
@@ -58,7 +58,6 @@ import {Card} from "react-native-elements"; //crear tarjeta formulario
 export default class AddOrder1 extends Component{
     constructor(props){
         super(props);
-        this.userId = firebase.auth().currentUser.uid;
         this.state = {
             pedido:{
                 name:'',
@@ -68,8 +67,8 @@ export default class AddOrder1 extends Component{
 
 
                 FlatListItems: [
-                    {id: 'CAFÉ GRAN BOUQUET', image:'cafe_gran_bouquet', cant:0},
-                    {id: 'CAFÉ NATURAL SUPREMO', image:'cafe_natural_supremo', cant:0}/*,
+                    {id: 'CAFÉ GRAN BOUQUET', image:cafe_gran_bouquet, cant:0},
+                    {id: 'CAFÉ NATURAL SUPREMO', image:cafe_natural_supremo, cant:0}/*,
                     {key: 'CAFÉ ESPECIAL SUPREMO', image:sm_alta_gama, cant:0},
                     {key: 'CAFÉ SUPERIOR SELECTO', image:sm_alta_gama_marron, cant:0},
                     {key: 'CAFÉ DESCAFEINADO SELECTO', image:sm_gama_descafeinado, cant:0},
@@ -139,55 +138,8 @@ export default class AddOrder1 extends Component{
     Alert.alert(item);
     
     }
-
-    linesWithQuantity(){
-        var lines = '{';
-        var orderLines = [];
-        this.state.pedido.FlatListItems.forEach(element => {
-            console.log('element.cant: ' + element.cant);
-            if(element.cant>0){
-                lines += (lines.length>1?',':'') + "'" + element.image + "':" + "{'name':" + "'" + element.id +"'" + ", 'quantity':" + element.cant  + '}'   ;              
-                /*orderLines.push({
-                    id:element.image,
-                    name:element.id,
-                    quantity: element.cant                    
-                })*/
-            }
-        });
-        lines = lines + '}';
-
-        console.log('OrderLines: ' + JSON.stringify(lines));
-        return lines;
-    }
-
     save(){
-
-        // 1. Buscar lineas con cantidad >0
-        var lines = this.linesWithQuantity();
-        // 2. Crear pedido
-        if(lines.length>0){
-            var order = "{'P0000099'" + ":{" +
-                "'date_delivery'" +":" + "'25/05/2019 22:35'," +
-                "'date_order'" + ":" + "''," +
-                "'date_shipment'" +":" + "''," +
-                "'order_lines'" +":" + lines + "}}";
-
-            orderStr = JSON.stringify(order);
-            
-            var orderM = orderStr.replace(/'/g, '"');
-            console.log('order_ ' + orderM );
-
-            firebase.database().ref('order/'+this.userId +'/').set(orderM).then((data)=>{
-                //success callback
-                console.log('data ' , data)
-            }).catch((error)=>{
-                //error callback
-                console.log('error ' , error)
-            })
-        }
-
-        // 3. añadir las lineas (ya en JSON) recogidas anteriormente.
-       /* const validate = this.refs.form.getValue();
+        const validate = this.refs.form.getValue();
         if(validate){
             let data = {};
             const key = firebase.database().ref().child('pedidos').push().key;
@@ -196,7 +148,7 @@ export default class AddOrder1 extends Component{
             firebase.database().ref().update(data).then(()=>{
                this.props.navigation.navigate('ListOrders'); 
             });
-        }*/
+        }
     }
 
     onChange(pedido){
@@ -205,11 +157,23 @@ export default class AddOrder1 extends Component{
     getVal(val){
         console.warn(val);
         }     
-  
-getImage(index){
-    var name = this.state.pedido.FlatListItems[index].image;
-    var image = '';
+    /*
+    getVal(val,index){
+        console.log("index: " + index);
+        cantidadPrueba = this.state.pedido.FlatListItems[index].cant;
+        console.log("prueba: " + cantidadPrueba);
+        console.log(val);
+        this.setState({cant:val});
+        this.state.pedido.FlatListItems[index].cant=val;
+        console.log(this.state.pedido.FlatListItems[index].cant);
 
+       
+        
+    }  
+*/    
+getImage(name){
+    var image = '';
+    //alert('ITEM: ' + name);
     switch (name){
         case 'cafe_gran_bouquet':
             image = cafe_gran_bouquet;
@@ -217,11 +181,8 @@ getImage(index){
         case 'cafe_natural_supremo':
             image = cafe_natural_supremo;
             break;
-        case 'cafe_descafeinado':
-            image = cafe_descafeinado;
-            break;    
         default:
-            image = null; 
+            image = cafe_gran_bouquet; 
     }
     return image;
 }
@@ -231,39 +192,50 @@ setStateant(val, index){
 }
     render(){
         const {pedido} = this.state;
-
+        
+        
         return(
             <BackgroundImage style={{flex:1, width: null, height:null, backgroundColor: 'rgba(200, 38, 74, 0.3)'}}>
                 <ScrollView>
+                {/* <FlatList 
+                        data={pedidos}
+                        // numColumns={3}
+                        keyExtractor={(data) => data.id}
+                        renderItem={({ item }) => {
+                            return(
+                            <View style={styles.item}>
+                                <Text style={styles.text}>
+                                    {item.id}       Línea de pedido: 5   
+                                </Text>
+                                <Text>Fecha realizado: 15/05/19    Fecha creación: 13/05/19</Text>
+                            </View>
+                        );
+                        }}
+                    /> */}
                     <FlatList
                         data={ this.state.pedido.FlatListItems } 
                         keyExtractor={(data) => data.id}
                         
                         ItemSeparatorComponent = {this.FlatListItemSeparator}
-                        extraData={this.state}                        
+                        extraData={this.state}
                         renderItem={({item,index}) =><View style={styles.container}>
-                       
-                            <Image width={80} height={80} style={{width: 80, height: 80, justifyContent:"flex-start"}} source={this.getImage(index)}/>
-                            <Text> Cantidad: {this.state.pedido.FlatListItems[index].cant}</Text>
-                            
-                           
-                            <Text style={styles.item}>   
-                            
-                            {this.state.pedido.FlatListItems[index].id} 
-                        </Text>
+                            <Text style={styles.item} onPress={this.GetItem.bind(this, item.id)} ><Image width={80} height={80} style={{width: 80, height: 80}} source={this.getImage(item.image)}/>{item.id}</Text>
                             <Slider style={{width: '70%', flex:1, left:90}}
                                 maximumValue={100}
                                 minimumValue={0}
                                 step={1}
                                 value={item.cant}
+                                // onValueChange={val => this.setState({ cant: val })}
+                                //onSlidingComplete={ val => this.getVal(val,index)} 
+                                //Pegado de internet
+                                value={item.cant}
+                                // this.setState({cant:val});
+                                //this.state.pedido.FlatListItems[index].cant=val;
                                 onValueChange={val => this.setStateant(val,index)}
                                 //onSlidingComplete={ val => this.getVal(val)}   
                             />
-           
-                        
-                        
                             
-                            
+                            <Text> Cantidad: {this.state.pedido.FlatListItems[index].cant}</Text>
                             </View>
                         }
                     
@@ -297,7 +269,7 @@ const styles = StyleSheet.create({
     
  
 item: {
-    alignItems: "flex-start",
+   
     marginTop:15,
     padding: 10,
     fontSize: 16,

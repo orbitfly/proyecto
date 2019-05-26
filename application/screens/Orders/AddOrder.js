@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import BackgroundImage from "../../components/BackgroundImage";
 import AppButton from "../../components/AppButton";
 import { View, StyleSheet, ScrollView, FlatList, Text, Alert, Rating, Image } from 'react-native';
+import {Button} from 'react-native-elements';
+import {Dimensions} from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import * as firebase from 'firebase';
 import Slider from "react-native-slider";
 import cafe_gran_bouquet from "../../../assets/images/cafe_gran_bouquet.png";
@@ -60,12 +63,12 @@ export default class AddOrder1 extends Component {
         super(props);
         this.userId = firebase.auth().currentUser.uid;
         this.state = {
+            saveInProcess : false,
             pedido: {
                 name: '',
                 type: '',
                 quantity: 0,
                 description: '',
-
 
                 FlatListItems: [
                     { id: 'CAFÉ GRAN BOUQUET', image: 'cafe_gran_bouquet', cant: 0 },
@@ -157,7 +160,7 @@ export default class AddOrder1 extends Component {
     }
 
     save() {
-
+        
         // Buscar lineas con cantidad >0 para ejecutar el guardado.
         //var lines = this.linesWithQuantity();
         // 0. Crear JSON de pedido
@@ -191,7 +194,7 @@ export default class AddOrder1 extends Component {
                 date_delivery : fecha,
                 date_order : '',
                 date_shipment : '',
-                order_lines : null, 
+                // order_lines : null, 
                 qty_total : this.state.pedido.quantity
             }).then((data) => {
                  //success callback
@@ -199,23 +202,30 @@ export default class AddOrder1 extends Component {
              }).catch((error) => {
                  //error callback
                  console.log('error ', error)
+                 this.state.saveInProcess = false;
              })
              // 2. añadir las lineas .
              this.state.pedido.FlatListItems.forEach(element => {
                 if (element.cant > 0) {
-                    firebase.database().ref('order/'+this.userId + '/' + nombrePedido + '/orderLines/').child(element.image).set({
+                    firebase.database().ref('order/'+this.userId + '/' + nombrePedido + '/order_lines/').child(element.image).set({
                         name : element.id,
                         quantity : element.cant
                     }).then((data) => {
                         //success callback
                         console.log('data_line ', data)
+                        this.props.navigation.navigate('ListOrder'); 
+                        
+                        
                     }).catch((error) => {
                         //error callback
                         console.log('error_line ', error)
+                        this.state.saveInProcess = false;
                     })                    
                 }
             });  
             
+        }else{
+            this.state.saveInProcess = false;
         }
     }
 
@@ -251,7 +261,7 @@ export default class AddOrder1 extends Component {
     }
     render() {
         const { pedido } = this.state;
-
+        const {width} = Dimensions.get('window');   //ocupa el 100% de la pantalla
         return (
             <BackgroundImage style={{ flex: 1, width: null, height: null, backgroundColor: 'rgba(200, 38, 74, 0.3)' }}>
                 <ScrollView>
@@ -291,22 +301,72 @@ export default class AddOrder1 extends Component {
 
 
                 </ScrollView>
-                <AppButton
+                {/* <AppButton
+                    action = {() => {
+
+                        if (!this.state.saveInProcess) {
+                            this.state.saveInProcess = true;
+                            this.save();
+                        } else {
+                            /*Login in process, do something else
+                        }}}
                     bgColor="rgba(255, 38, 74, 0.9)"
                     title="Confirmar pedido"
-                    action={this.save.bind(this)}
+                    ref="btn"
+                    //action={this.save.bind(this)}
                     iconName="plus"
                     iconSize={30}
                     iconColor="#fff"
-                />
-            </BackgroundImage>
-        )
-    }
-}
+                /> */}
 
+                <Button
+                onPress={() => {
+
+                    if (!this.state.saveInProcess) {
+                        this.state.saveInProcess = true;
+                        this.save();
+                    } else {
+                        /*Login in process, do something else*/
+                    }}}
+                buttonStyle={{
+                    backgroundColor: "rgba(255, 38, 74, 0.9)",
+                    height: 45,
+                    borderColor:"transparent",
+                    borderWidth: 0,
+                    borderRadius: 5,
+                    marginBottom: 5,
+                    width: width,//'100%', funciona bien
+                    alignContent:'center',
+                    alignItems:'center',
+                    //marginHorizontal: 125
+                    
+                }}
+                title= "Confirmar pedido"
+                //icono representado en el botón style={{ marginLeft: 10 }}
+                icon={
+                    <Icon style={{ marginLeft: 10 }}
+                        name={"save"}
+                        size={18}
+                        color="#fff"
+                     
+                    />
+                }
+                
+                iconRight={true}    //icono se muestre a la derecha del botón
+            >
+
+            </Button>
+
+
+
+                
+            </BackgroundImage>
+            )
+        }          
+    }
 
 const styles = StyleSheet.create({
-    container: {
+    container:{
         backgroundColor: 'rgba(231, 228, 224, 0.8)',
         flex: 1,
         marginLeft: 10,
@@ -314,20 +374,20 @@ const styles = StyleSheet.create({
         alignItems: "stretch",
         justifyContent: "center"
     },
-
-
-    item: {
-        alignItems: "flex-start",
-        marginTop: 15,
-        padding: 10,
-        fontSize: 16,
-        height: 50,
-    },
-    logo: {
-        //  width: '70%',
-        height: '45%',
-        marginTop: 20
-
-    },
+    
+ 
+item: {
+   
+    marginTop:15,
+    padding: 10,
+    fontSize: 16,
+    height: 50,
+  },
+  logo: {
+  //  width: '70%',
+    height: '45%',
+    marginTop: 20
+    
+  },
 
 });

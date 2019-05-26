@@ -37,7 +37,7 @@ export default class OrderDetail extends Component{
     componentDidMount() {
       
         let identificadorPedido = this.state.idPedido;
-        
+        console.log("identificadorPedido: " + identificadorPedido);
         //referencia base datos firebase
         //console.log('id user: ' + this.userId);        
         this.refOrders = firebase.database().ref().child('order/' + this.userId + '/' + identificadorPedido+'/order_lines');

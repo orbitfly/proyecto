@@ -1,7 +1,7 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import BackgroundImage from "../../components/BackgroundImage";
 import AppButton from "../../components/AppButton";
-import {View, StyleSheet,ScrollView,FlatList, Text, Alert, Rating,Image} from 'react-native';
+import { View, StyleSheet, ScrollView, FlatList, Text, Alert, Rating, Image } from 'react-native';
 import * as firebase from 'firebase';
 import Slider from "react-native-slider";
 import cafe_gran_bouquet from "../../../assets/images/cafe_gran_bouquet.png";
@@ -20,19 +20,19 @@ import sm_te_verde_gunpower from "../../../assets/images/sm_te-verde-gunpower.pn
 import sm_sin_titulo_1001240030 from "../../../assets/images/sm_sin-titulo-1001240030.png";
 import sm_sin_titulo_1000540100 from "../../../assets/images/sm_sin-titulo-1000540100.png";
 import sm_sin_titulo_1000040150 from "../../../assets/images/sm_sin-titulo-1000040150.png";
-import sm_sin_titulo_1000340120 from "../../../assets/images/sm_sin-titulo-1000340120.png"; 
+import sm_sin_titulo_1000340120 from "../../../assets/images/sm_sin-titulo-1000340120.png";
 import sm_sin_titulo_1000240130 from "../../../assets/images/sm_sin-titulo-1000240130.png";
 import sm_sin_titulo_1000740080 from "../../../assets/images/sm_sin-titulo-1000740080.png";
 import sm_sin_titulo_1000640090 from "../../../assets/images/sm_sin-titulo-1000640090.png";
 import sm_sin_titulo_1000440110 from "../../../assets/images/sm_sin-titulo-1000440110.png";
-import sm_sin_titulo_1000140140 from "../../../assets/images/sm_sin-titulo-1000140140.png"; 
+import sm_sin_titulo_1000140140 from "../../../assets/images/sm_sin-titulo-1000140140.png";
 import sm_sin_titulo_1000840070 from "../../../assets/images/sm_sin-titulo-1000840070.png";
 import sm_azucares_y_endulzantes from "../../../assets/images/sm_azucares-y-endulzantes.png";
 import sm_smcon_leche_1 from "../../../assets/images/sm_smcon-leche-1.png";
 import sm_smluna_azul from "../../../assets/images/sm_smluna-azul.png";
 import sm_smextra_negro from "../../../assets/images/sm_smextra-negro.png";
-import sm_smcon_leche from "../../../assets/images/sm_smcon-leche.png";       
-import sm_smchili from "../../../assets/images/sm_smchili.png";          
+import sm_smcon_leche from "../../../assets/images/sm_smcon-leche.png";
+import sm_smchili from "../../../assets/images/sm_smchili.png";
 import sm_smfresa from "../../../assets/images/sm_smfresa.png";
 import sm_smcoco_1 from "../../../assets/images/sm_smcoco-1.png";
 import sm_smmenta from "../../../assets/images/sm_smmenta.png";
@@ -45,31 +45,31 @@ import sm_besochocolatetostadero from "../../../assets/images/sm_besochocolateto
 import sm_galletachocolate from "../../../assets/images/sm_galletachocolate.png";
 import sm_galletacaramelo from "../../../assets/images/sm_galletacaramelo.png";
 import sm_galletavainilla from "../../../assets/images/sm_galletavainilla.png";
-import sm_expositores from "../../../assets/images/sm_expositores.png";        
+import sm_expositores from "../../../assets/images/sm_expositores.png";
 import sm_cartas from "../../../assets/images/sm_cartas.png";
 import sm_cuadros from "../../../assets/images/sm_cuadros.png";
 import sm_pizarras from "../../../assets/images/sm_pizarras.png";
 
 // import {options, Pedido} from '../../forms/pedido';
 import t from 'tcomb-form-native';
-import {Card} from "react-native-elements"; //crear tarjeta formulario
+import { Card } from "react-native-elements"; //crear tarjeta formulario
 // const Form = t.form.Form;
 
-export default class AddOrder1 extends Component{
-    constructor(props){
+export default class AddOrder1 extends Component {
+    constructor(props) {
         super(props);
         this.userId = firebase.auth().currentUser.uid;
         this.state = {
-            pedido:{
-                name:'',
-                type:'',
+            pedido: {
+                name: '',
+                type: '',
                 quantity: 0,
                 description: '',
 
 
                 FlatListItems: [
-                    {id: 'CAFÉ GRAN BOUQUET', image:'cafe_gran_bouquet', cant:0},
-                    {id: 'CAFÉ NATURAL SUPREMO', image:'cafe_natural_supremo', cant:0}/*,
+                    { id: 'CAFÉ GRAN BOUQUET', image: 'cafe_gran_bouquet', cant: 0 },
+                    { id: 'CAFÉ NATURAL SUPREMO', image: 'cafe_natural_supremo', cant: 0 }/*,
                     {key: 'CAFÉ ESPECIAL SUPREMO', image:sm_alta_gama, cant:0},
                     {key: 'CAFÉ SUPERIOR SELECTO', image:sm_alta_gama_marron, cant:0},
                     {key: 'CAFÉ DESCAFEINADO SELECTO', image:sm_gama_descafeinado, cant:0},
@@ -114,162 +114,184 @@ export default class AddOrder1 extends Component{
                     {key: 'CUADROS SOPORTE',image:sm_cuadros, cant:0},                  
                     {key: 'PIZARRAS SOPORTE',image:sm_pizarras, cant:0}*/
                 ]
-            
+
             }
         }
     }
+
+
+
+
+
+
+
 
 
     FlatListItemSeparator = () => {
         return (
             <View
-            style={{
-                height: 1,
-                width: "100%",
-                backgroundColor: "#607D8B",
-            }}
-        />
+                style={{
+                    height: 1,
+                    width: "100%",
+                    backgroundColor: "#607D8B",
+                }}
+            />
         );
     }
-    
 
-          
-    GetItem (item) {
 
-    Alert.alert(item);
-    
+
+    GetItem(item) {
+
+        Alert.alert(item);
+
     }
 
-    linesWithQuantity(){
-        var lines = '{';
+    getLinesQuantity() {
         var orderLines = [];
         this.state.pedido.FlatListItems.forEach(element => {
-            console.log('element.cant: ' + element.cant);
-            if(element.cant>0){
-                lines += (lines.length>1?',':'') + "'" + element.image + "':" + "{'name':" + "'" + element.id +"'" + ", 'quantity':" + element.cant  + '}'   ;              
-                /*orderLines.push({
-                    id:element.image,
-                    name:element.id,
-                    quantity: element.cant                    
-                })*/
+            if (element.cant > 0) {
+                this.state.pedido.quantity += element.cant;
             }
         });
-        lines = lines + '}';
-
-        console.log('OrderLines: ' + JSON.stringify(lines));
-        return lines;
     }
 
-    save(){
+    save() {
 
-        // 1. Buscar lineas con cantidad >0
-        var lines = this.linesWithQuantity();
-        // 2. Crear pedido
-        if(lines.length>0){
-            var order = "{'P0000099'" + ":{" +
-                "'date_delivery'" +":" + "'25/05/2019 22:35'," +
-                "'date_order'" + ":" + "''," +
-                "'date_shipment'" +":" + "''," +
-                "'order_lines'" +":" + lines + "}}";
-
-            orderStr = JSON.stringify(order);
-            
-            var orderM = orderStr.replace(/'/g, '"');
-            console.log('order_ ' + orderM );
-
-            firebase.database().ref('order/'+this.userId +'/').set(orderM).then((data)=>{
-                //success callback
-                console.log('data ' , data)
-            }).catch((error)=>{
-                //error callback
-                console.log('error ' , error)
-            })
-        }
-
-        // 3. añadir las lineas (ya en JSON) recogidas anteriormente.
-       /* const validate = this.refs.form.getValue();
-        if(validate){
-            let data = {};
-            const key = firebase.database().ref().child('pedidos').push().key;
-            data[`pedidos/${key}`] = this.state.pedido;     
-            //guardamos los datos
-            firebase.database().ref().update(data).then(()=>{
-               this.props.navigation.navigate('ListOrders'); 
+        // Buscar lineas con cantidad >0 para ejecutar el guardado.
+        //var lines = this.linesWithQuantity();
+        // 0. Crear JSON de pedido
+        this.getLinesQuantity();
+        if (this.state.pedido.quantity > 0) {
+            //probando si coge el último pedido
+            var ref = firebase.database().ref().child('order/' + this.userId)
+            var nombrePedido;
+            ref.orderByChild("weight").limitToLast(1).on("child_added", function (snapshot) {
+                // This callback will be triggered exactly two times, unless there are
+                // fewer than two dinosaurs stored in the Database. It will also get fired
+                // for every new, heavier dinosaur that gets added to the data set.
+                //console.log(snapshot.key);
+                nombrePedido = snapshot.key
             });
-        }*/
+
+            var numPedido = parseInt(nombrePedido.replace('P', '')) + 1;
+            nombrePedido = "P" + String(numPedido).padStart(7, "0")
+            console.log("nombrePedido: " + nombrePedido)
+            var currentDate = new Date();
+            var fecha = String(currentDate.getDate()).padStart(2, "0") + '/' + String((currentDate.getMonth() + 1)).padStart(2, "0") + '/' + (currentDate.getFullYear()) +
+                ' ' + currentDate.getHours() + ':' + currentDate.getMinutes();
+
+            //PRUEBA 25/05
+            let myJSON = {
+                [nombrePedido] : {
+                    date_delivery : fecha,
+                    date_order : '',
+                    date_shipment : '',
+                    order_lines : null, 
+                    qty_total : this.state.pedido.quantity
+                }
+            };
+            
+           var strJSON = JSON.stringify(myJSON);
+            console.log('MyJSON: ' + strJSON);
+            // 1. guardar pedido
+            firebase.database().ref('order/'+this.userId+'/').child(nombrePedido).set(myJSON[nombrePedido]).then((data) => {
+                 //success callback
+                 console.log('data ', data)
+             }).catch((error) => {
+                 //error callback
+                 console.log('error ', error)
+             })
+             // 2. añadir las lineas .
+             this.state.pedido.FlatListItems.forEach(element => {
+                if (element.cant > 0) {
+                    firebase.database().ref('order/'+this.userId + '/' + nombrePedido + '/orderLines/').child(element.image).set({
+                        name : element.id,
+                        quantity : element.cant
+                    }).then((data) => {
+                        //success callback
+                        console.log('data_line ', data)
+                    }).catch((error) => {
+                        //error callback
+                        console.log('error_line ', error)
+                    })                    
+                }
+            });  
+            
+        }
     }
 
-    onChange(pedido){
-        this.setState({pedido});
+    onChange(pedido) {
+        this.setState({ pedido });
     }
-    getVal(val){
+    getVal(val) {
         console.warn(val);
-        }     
-  
-getImage(index){
-    var name = this.state.pedido.FlatListItems[index].image;
-    var image = '';
-
-    switch (name){
-        case 'cafe_gran_bouquet':
-            image = cafe_gran_bouquet;
-            break;
-        case 'cafe_natural_supremo':
-            image = cafe_natural_supremo;
-            break;
-        case 'cafe_descafeinado':
-            image = cafe_descafeinado;
-            break;    
-        default:
-            image = null; 
     }
-    return image;
-}
-setStateant(val, index){
-    this.setState({cant:val});
-    this.state.pedido.FlatListItems[index].cant=val;
-}
-    render(){
-        const {pedido} = this.state;
 
-        return(
-            <BackgroundImage style={{flex:1, width: null, height:null, backgroundColor: 'rgba(200, 38, 74, 0.3)'}}>
+    getImage(index) {
+        var name = this.state.pedido.FlatListItems[index].image;
+        var image = '';
+
+        switch (name) {
+            case 'cafe_gran_bouquet':
+                image = cafe_gran_bouquet;
+                break;
+            case 'cafe_natural_supremo':
+                image = cafe_natural_supremo;
+                break;
+            case 'cafe_descafeinado':
+                image = cafe_descafeinado;
+                break;
+            default:
+                image = null;
+        }
+        return image;
+    }
+    setStateant(val, index) {
+        this.setState({ cant: val });
+        this.state.pedido.FlatListItems[index].cant = val;
+    }
+    render() {
+        const { pedido } = this.state;
+
+        return (
+            <BackgroundImage style={{ flex: 1, width: null, height: null, backgroundColor: 'rgba(200, 38, 74, 0.3)' }}>
                 <ScrollView>
                     <FlatList
-                        data={ this.state.pedido.FlatListItems } 
+                        data={this.state.pedido.FlatListItems}
                         keyExtractor={(data) => data.id}
-                        
-                        ItemSeparatorComponent = {this.FlatListItemSeparator}
-                        extraData={this.state}                        
-                        renderItem={({item,index}) =><View style={styles.container}>
-                       
-                            <Image width={80} height={80} style={{width: 80, height: 80, justifyContent:"flex-start"}} source={this.getImage(index)}/>
+
+                        ItemSeparatorComponent={this.FlatListItemSeparator}
+                        extraData={this.state}
+                        renderItem={({ item, index }) => <View style={styles.container}>
+
+                            <Image width={80} height={80} style={{ width: 80, height: 80, justifyContent: "flex-start" }} source={this.getImage(index)} />
                             <Text> Cantidad: {this.state.pedido.FlatListItems[index].cant}</Text>
-                            
-                           
-                            <Text style={styles.item}>   
-                            
-                            {this.state.pedido.FlatListItems[index].id} 
-                        </Text>
-                            <Slider style={{width: '70%', flex:1, left:90}}
+
+
+                            <Text style={styles.item}>
+
+                                {this.state.pedido.FlatListItems[index].id}
+                            </Text>
+                            <Slider style={{ width: '70%', flex: 1, left: 90 }}
                                 maximumValue={100}
                                 minimumValue={0}
                                 step={1}
                                 value={item.cant}
-                                onValueChange={val => this.setStateant(val,index)}
-                                //onSlidingComplete={ val => this.getVal(val)}   
+                                onValueChange={val => this.setStateant(val, index)}
+                            //onSlidingComplete={ val => this.getVal(val)}   
                             />
-           
-                        
-                        
-                            
-                            
-                            </View>
+
+
+
+
+
+                        </View>
                         }
-                    
+
                     />
-                    
-                   
+
+
                 </ScrollView>
                 <AppButton
                     bgColor="rgba(255, 38, 74, 0.9)"
@@ -281,12 +303,12 @@ setStateant(val, index){
                 />
             </BackgroundImage>
         )
-    }          
+    }
 }
 
 
 const styles = StyleSheet.create({
-    container:{
+    container: {
         backgroundColor: 'rgba(231, 228, 224, 0.8)',
         flex: 1,
         marginLeft: 10,
@@ -294,20 +316,20 @@ const styles = StyleSheet.create({
         alignItems: "stretch",
         justifyContent: "center"
     },
-    
- 
-item: {
-    alignItems: "flex-start",
-    marginTop:15,
-    padding: 10,
-    fontSize: 16,
-    height: 50,
-  },
-  logo: {
-  //  width: '70%',
-    height: '45%',
-    marginTop: 20
-    
-  },
+
+
+    item: {
+        alignItems: "flex-start",
+        marginTop: 15,
+        padding: 10,
+        fontSize: 16,
+        height: 50,
+    },
+    logo: {
+        //  width: '70%',
+        height: '45%',
+        marginTop: 20
+
+    },
 
 });

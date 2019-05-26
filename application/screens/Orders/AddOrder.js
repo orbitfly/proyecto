@@ -176,26 +176,19 @@ export default class AddOrder1 extends Component {
 
             var numPedido = parseInt(nombrePedido.replace('P', '')) + 1;
             nombrePedido = "P" + String(numPedido).padStart(7, "0")
-            console.log("nombrePedido: " + nombrePedido)
+            //console.log("nombrePedido: " + nombrePedido)  
             var currentDate = new Date();
             var fecha = String(currentDate.getDate()).padStart(2, "0") + '/' + String((currentDate.getMonth() + 1)).padStart(2, "0") + '/' + (currentDate.getFullYear()) +
-                ' ' + currentDate.getHours() + ':' + currentDate.getMinutes();
-
-            //PRUEBA 25/05
-            let myJSON = {
-                [nombrePedido] : {
-                    date_delivery : fecha,
-                    date_order : '',
-                    date_shipment : '',
-                    order_lines : null, 
-                    qty_total : this.state.pedido.quantity
-                }
-            };
+                ' ' + currentDate.getHours() + ':' + currentDate.getMinutes();        
             
-           var strJSON = JSON.stringify(myJSON);
-            console.log('MyJSON: ' + strJSON);
             // 1. guardar pedido
-            firebase.database().ref('order/'+this.userId+'/').child(nombrePedido).set(myJSON[nombrePedido]).then((data) => {
+            firebase.database().ref('order/'+this.userId+'/').child(nombrePedido).set({
+                date_delivery : fecha,
+                date_order : '',
+                date_shipment : '',
+                order_lines : null, 
+                qty_total : this.state.pedido.quantity
+            }).then((data) => {
                  //success callback
                  console.log('data ', data)
              }).catch((error) => {

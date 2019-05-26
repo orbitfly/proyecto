@@ -170,18 +170,23 @@ export default class AddOrder1 extends Component {
                 // This callback will be triggered exactly two times, unless there are
                 // fewer than two dinosaurs stored in the Database. It will also get fired
                 // for every new, heavier dinosaur that gets added to the data set.
-                //console.log(snapshot.key);
+                console.log(snapshot.key);
                 nombrePedido = snapshot.key
             });
-
-            var numPedido = parseInt(nombrePedido.replace('P', '')) + 1;
-            nombrePedido = "P" + String(numPedido).padStart(7, "0")
-            //console.log("nombrePedido: " + nombrePedido)  
+            var numPedido = 'P0000001';
+            if(nombrePedido === undefined){
+                nombrePedido = numPedido;
+            }else{
+                numPedido = parseInt(nombrePedido.replace('P', '')) + 1;
+                nombrePedido = "P" + String(numPedido).padStart(7, "0")
+            }
+            
+            console.log("nombrePedido: " + nombrePedido)  
             var currentDate = new Date();
             var fecha = String(currentDate.getDate()).padStart(2, "0") + '/' + String((currentDate.getMonth() + 1)).padStart(2, "0") + '/' + (currentDate.getFullYear()) +
                 ' ' + currentDate.getHours() + ':' + currentDate.getMinutes();        
             
-            // 1. guardar pedido
+            // 1. guardar pedido 
             firebase.database().ref('order/'+this.userId+'/').child(nombrePedido).set({
                 date_delivery : fecha,
                 date_order : '',

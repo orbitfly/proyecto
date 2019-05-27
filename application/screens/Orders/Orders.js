@@ -69,16 +69,7 @@ export default class Orders extends Component {
         this.props.navigation.dispatch(navigateAction);
     }
 
-
-    // pedidosDetail(pedido) {
-    //     const navigateAction = NavigationActions.navigate({
-    //         routeName: 'DetailPedido',
-    //         params:{pedido}
-    //     });
-    //     this.props.navigation.dispatch(navigateAction);
-    // }
     pedidosDetail(pedido) {
-        console.log("Entra")
         const navigateAction = NavigationActions.navigate({
             routeName: 'OrderDetail',
             params:{pedido}
@@ -106,8 +97,9 @@ export default class Orders extends Component {
                     {pedido.id}    
                 </Text>
                 <Text>Cantidad total: {pedido.quantity}</Text>
+                <Text>Fecha creación: {pedido.date_order}  </Text>
                 <Text>Fecha entregado: {pedido.date_delivery} </Text>
-                <Text>Fecha creación: {pedido.date_order}  </Text> 
+                 
             {/* </View> */}
             </TouchableOpacity>
         )
@@ -153,6 +145,7 @@ export default class Orders extends Component {
 
     render(){
         const { loaded, pedidos } = this.state;
+        const pedidosReverse = pedidos.reverse();
         if (!loaded) {
             console.log("No está loaded");
             return <PreLoader />;
@@ -169,11 +162,11 @@ export default class Orders extends Component {
                     value= {this.state.search}
                 />
         );
-        if (!pedidos.length) {
+        if (!pedidosReverse.length) {
             return (
                 <BackgroundImage style={{flex:1, width: null, height:null, backgroundColor: 'rgba(200, 38, 74, 0.3)'}}>
                     {searchBar}
-                    <OrdersEmpty text="No hay pedidos disponibles"/>
+                    <OrdersEmpty text="No existen pedidos"/>
                     <OrdersAddButton addOrders={this.addOrders.bind(this)} />
                 </BackgroundImage>  
             );
@@ -184,13 +177,14 @@ export default class Orders extends Component {
             
                 <BackgroundImage style={styles.backgroundContainer}>
                     <ScrollView>
-                    {searchBar}
+                    {/* {searchBar} */}
 
                     <FlatList 
-                        data={pedidos}
+                        data={pedidosReverse}
                         renderItem={(data) => this.renderPedidos(data.item)}
                         keyExtractor={(data) => data.id}
                     />
+                    
                     {/* <FlatList 
                         data={pedidos}
                         // numColumns={3}
@@ -229,16 +223,14 @@ const styles = StyleSheet.create({
         fontSize: 15,
         color: 'rgba(255, 38, 74, 0.6)'
     },
-    item: {
-        padding: 0,
-        backgroundColor: 'rgba(206, 206, 206, 0.6)'
-    },
+    
     backgroundContainer: {
         flex:1,
         width: null,
         height: null,
         // backgroundColor: '#D3033E'
-        backgroundColor: 'rgba(200, 38, 74, 0.8)'
+        backgroundColor: 'rgba(200, 38, 74, 0.8)',
+        
         
       },
       item: {
@@ -249,6 +241,7 @@ const styles = StyleSheet.create({
         padding: 15,
         flexBasis: 0,
       },
+      
       text: {
         color: "#333333",
         fontWeight: 'bold'

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import BackgroundImage from '../../components/BackgroundImage';
 import PreLoader from '../../components/PreLoader';
-import { StyleSheet, FlatList, View, Image, Text, ScrollView, TouchableOpacity } from 'react-native';      //Desarrollar lista para definir los items
+import { StyleSheet, FlatList, View, Alert, Text, ScrollView, TouchableOpacity } from 'react-native';      //Desarrollar lista para definir los items
 import { ListItem, SearchBar } from 'react-native-elements';
 import * as firebase from 'firebase';
 import { NavigationActions } from 'react-navigation';
@@ -17,7 +17,8 @@ export default class Notifications extends Component {
         this.state = {
             notificaciones: [],
             loaded: false,
-            search: ''
+            search: '',
+            press: false
         };
     }
 
@@ -77,8 +78,31 @@ export default class Notifications extends Component {
         this.props.navigation.dispatch(navigateAction);
     }
 
+    cambiarEstado(nombre, notificacion){
+        if(nombre === 'bookmark'){
+            // let read = this.state.notificacion.read = true;
 
+            // console.log('nombre: ' + nombre)
+        firebase.database().ref('notifications/' + this.userId + '/' + notificacion + '/').update({
+            read:true,
+        });
+        }else{
+            firebase.database().ref('notifications/' + this.userId + '/' + notificacion + '/').update({
+                read:false,
+            });
+        }
+    }
 
+    eliminar(notificacion){
+        Alert.alert(
+            'ELIMINAR NOTIFICACIÓN',
+            '¿Está seguro de que desea eliminar la notificación?',
+            [
+              {text: 'NO', onPress: () =>  {},style: 'cancel'},
+              {text: 'YES', onPress: () => firebase.database().ref('notifications/' + this.userId + '/' + notificacion).remove()},
+            ]
+          );
+    }
 
     renderNotificaciones(notificacion) {
         console.log("Notificación: " + notificacion.id)
@@ -99,7 +123,7 @@ export default class Notifications extends Component {
                 <TouchableOpacity style={styles.itemViewed} onPress={() => this.notificacionesDetail(notificacion)}>
                     <View style={{flexDirection: 'row'}}>
                         <View style={{width: 30, paddingTop:5, paddingBottom:5}}> 
-                            <Icon name='bookmark' size={20}/>
+                            <Icon name='bookmark' size={20} onPress={() => this.cambiarEstado('bookmark', notificacion.id)}/>
                         </View>
                         <View style={{flexGrow: 1}}>
                             <Text style={styles.text} >
@@ -113,6 +137,11 @@ export default class Notifications extends Component {
                         <View style={{width: 115}}> 
                             <Text style={styles.text}> {notificacion.date} </Text>
                         </View>
+                        <View style={{width: 30, paddingTop:5, paddingBottom:5}}> 
+                            <Icon name='trash-o' size={20} onPress={() => this.eliminar(notificacion.id)} />
+                        </View>
+                        
+                        
                         
                     </View>
 
@@ -124,7 +153,7 @@ export default class Notifications extends Component {
                 <TouchableOpacity style={styles.itemViewed} onPress={() => this.notificacionesDetail(notificacion)}>
                     <View style={{flexDirection: 'row'}}>
                          <View style={{width: 30, paddingTop:5, paddingBottom:5}}> 
-                            <Icon name='bookmark-o' size={20}/>
+                            <Icon name='bookmark-o' size={20} onPress={() => this.cambiarEstado('bookmark-o', notificacion.id)}/>
                         </View>
                         <View style={{flexGrow: 1}}>
                             <Text style={styles.textViewed} >
@@ -137,6 +166,9 @@ export default class Notifications extends Component {
                         
                         <View style={{width: 115}}> 
                             <Text style={styles.textViewed}> {notificacion.date} </Text>
+                        </View>
+                        <View style={{width: 30, paddingTop:5, paddingBottom:5}}> 
+                            <Icon name='trash-o' size={20} onPress={() => this.eliminar(notificacion.id)} />
                         </View>
                         
                     </View>

@@ -22,16 +22,10 @@ export default class NotificationDetail extends Component {
 
 
     componentDidMount() {
-        
         let identificadorNotificacion = this.state.idNotificacion.id;
-        console.log("identificadorNotificacion: " + identificadorNotificacion);
         //referencia base datos firebase
-        //console.log('id user: ' + this.userId);        
         this.refOrders = firebase.database().ref().child('notifications/' + this.userId + '/' + identificadorNotificacion.id + '/');
-
-
         this._loadFirebaseNotifications();
-
     }
 
     updateRead(read) {
@@ -66,10 +60,6 @@ export default class NotificationDetail extends Component {
 
     renderPedidos() {
         const { notification } = this.state;
-        console.log("identificadorNotificacion: " + this.state.idNotificacion);
-        console.log("TITLE: " + notification.title)
-
-
         return (
 
             <View /*style={styles.item}*/ style={styles.container}>
@@ -97,10 +87,6 @@ export default class NotificationDetail extends Component {
     }
 
     render() {
-        const { notificacion } = this.state.idNotificacion;
-        console.log("entra render")
-        console.log("date: " + notificacion);
-        // console.log("Notificacion: " + this.state.notificaciones[0].date);
         let read = this.state.idNotificacion.read = true;
         this.updateRead(read);
         return (

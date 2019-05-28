@@ -53,7 +53,7 @@ import te_secretos_india from "../../../assets/images/te_secretos_india.png";
 // import sm_cuadros from "../../../assets/images/sm_cuadros.png";
 // import sm_pizarras from "../../../assets/images/sm_pizarras.png";
 
-export default class AddOrder1 extends Component {
+export default class AddOrder extends Component {
     constructor(props) {
         super(props);
         this.userId = firebase.auth().currentUser.uid;
@@ -183,8 +183,8 @@ export default class AddOrder1 extends Component {
 
             // 1. guardar pedido 
             firebase.database().ref('order/' + this.userId + '/').child(nombrePedido).set({
-                date_delivery: fecha,
-                date_order: '',
+                date_delivery: '',
+                date_order: fecha,
                 date_shipment: '',
                 // order_lines : null, 
                 qty_total: this.state.pedido.quantity

@@ -61,12 +61,9 @@ export default class OrderDetail extends Component{
     }
 
     componentDidMount() {
-      
-        let identificadorPedido = this.state.idPedido;
-        console.log("identificadorPedido: " + identificadorPedido);      
+        let identificadorPedido = this.state.idPedido;  
         this.refOrders = firebase.database().ref().child('order/' + this.userId + '/' + identificadorPedido+'/order_lines');
         this._loadFirebaseOrdersLines();        
-        
     }
 
     _loadFirebaseOrdersLines(){
@@ -86,6 +83,8 @@ export default class OrderDetail extends Component{
                 loaded: true                
             });
         })
+
+        
     }
 
     renderPedidos(orderLine) {
@@ -122,7 +121,11 @@ export default class OrderDetail extends Component{
 
     render(){
         const { loaded, orderLines } = this.state;
-        console.log("entra render")
+        // for(var i= 0; i < this.state.orderLines.length; i++){
+        //     if(this.state.orderLines[i].quantity === 0){
+        //         firebase.database().ref('order/' + this.userId + '/' + this.state.idPedido+'/order_lines/' + this.state.orderLines[i].id).remove()
+        //     }
+        // }
         return(
             <BackgroundImage style={{flex:1, width: null, height:null, backgroundColor: 'rgba(200, 38, 74, 0.3)'}}>
                 <ScrollView>

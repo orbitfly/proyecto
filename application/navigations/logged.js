@@ -4,6 +4,7 @@ import OrdersScreen from "../screens/Orders/Orders";
 import LogoutScreen from "../screens/Logout";
 import AddOrderScreen from "../screens/Orders/AddOrder";
 import OrderDetailScreen from "../screens/Orders/OrderDetail";
+import OrderEditScreen from "../screens/Orders/OrderEdit";
 import NotificationDetailScreen from "../screens/Notifications/NotificationDetail";
 import NotificationsScreen from "../screens/Notifications/Notifications";
 import SettingScreen from "../screens/Setting";
@@ -74,6 +75,14 @@ const OrdersScreenStack = createStackNavigator(
             screen: OrderDetailScreen,
             navigationOptions: ({ navigation }) => ({
                 title: 'Detalles del pedido',
+                headerRight: rightIcon(navigation, 'home'),
+                headerLeft: leftIcon(navigation, 'bars')
+            })
+        },
+        OrderEdit: {
+            screen: OrderEditScreen,
+            navigationOptions: ({ navigation }) => ({
+                title: 'Editar pedido',
                 headerRight: rightIcon(navigation, 'home'),
                 headerLeft: leftIcon(navigation, 'bars')
             })

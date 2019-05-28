@@ -103,7 +103,7 @@ export default class Notifications extends Component {
                         </View>
                         <View style={{flexGrow: 1}}>
                             <Text style={styles.text} >
-                                {notificacion.id}: 
+                                {notificacion.id} 
                             </Text>
                             <Text style={{color:'#333333'}}>
                                 {notificacion.title}

@@ -207,7 +207,7 @@ export default class AddOrder1 extends Component {
             var nombrePedido = this.state.idPedido.id;
            
             
-            console.log("nombrePedido: " + nombrePedido)
+            // console.log("nombrePedido: " + nombrePedido)
             var currentDate = new Date();
             var fecha = String(currentDate.getDate()).padStart(2, "0") + '/' + String((currentDate.getMonth() + 1)).padStart(2, "0") + '/' + (currentDate.getFullYear()) +
                 ' ' + String(currentDate.getHours()).padStart(2, "0") + ':' + String(currentDate.getMinutes()).padStart(2, "0");
@@ -221,10 +221,10 @@ export default class AddOrder1 extends Component {
                 qty_total: this.state.quantityTotal
             }).then((data) => {
                 //success callback
-                console.log('data ', data)
+                // console.log('data ', data)
             }).catch((error) => {
                 //error callback
-                console.log('error ', error)
+                // console.log('error ', error)
                 this.state.saveInProcess = false;
             })
             // 2. añadir las lineas .
@@ -235,13 +235,13 @@ export default class AddOrder1 extends Component {
                         quantity: element.cant
                     }).then((data) => {
                         //success callback
-                        console.log('data_line ', data)
+                        // console.log('data_line ', data)
                         this.props.navigation.navigate('ListOrder');
  
 
                     }).catch((error) => {
                         //error callback
-                        console.log('error_line ', error)
+                        // console.log('error_line ', error)
                         this.state.saveInProcess = false;
                     })
                  }

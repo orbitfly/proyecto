@@ -57,35 +57,6 @@ export default class NotificationDetail extends Component {
         })
     }
 
-
-    renderPedidos() {
-        const { notification } = this.state;
-        return (
-
-            <View /*style={styles.item}*/ style={styles.container}>
-                <View style={{ flexGrow: 1 }}>
-                    <Text style={styles.title} >
-                        {notification.title}
-                    </Text>
-                    <View >
-                        <Text style={styles.text} >
-                            Descripción:
-                        </Text>
-
-                        <Text style={styles.quantity} >
-                            {notification.description}
-                        </Text>
-                    </View>
-
-
-                </View>
-
-
-            </View>
-
-        )
-    }
-
     render() {
         let read = this.state.idNotificacion.read = true;
         this.updateRead(read);

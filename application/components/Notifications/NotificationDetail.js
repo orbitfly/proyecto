@@ -85,8 +85,8 @@ export default class NotificationDetail extends Component{
 
     render(){
         const { loaded, notificaciones } = this.state;
-        console.log("entra render")
-        console.log("identificadorNotificacion: " + this.state.idNotificacion);
+        // console.log("entra render")
+        // console.log("identificadorNotificacion: " + this.state.idNotificacion);
         return(
             <BackgroundImage style={{flex:1, width: null, height:null, backgroundColor: 'rgba(200, 38, 74, 0.3)'}}>
                 <ScrollView>

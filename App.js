@@ -40,13 +40,12 @@ export default class App extends React.Component {
   render() {
     const {isLogged, loaded}=this.state;
     if(!loaded){
-      console.log("no está cargado");
+      // console.log("no está cargado");
       return (<PreLoader/>);
     }
 
     if(isLogged){
-      console.log("está logueado");
-      //return (<PedidosEmpty text="No hay pedidos disponibles"/>);
+      // console.log("está logueado");
       return (<LoggedNavigation />);
     }else{
       return (<GuestNavigation />);

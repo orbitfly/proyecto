@@ -29,7 +29,7 @@ export default class Orders extends Component {
 
         if (!search) {
             //referencia base datos firebase
-            console.log('id user: ' + this.userId);
+            // console.log('id user: ' + this.userId);
             this.refOrders = firebase.database().ref().child('order/' + this.userId);
         } else {
             //refernecia base datos firebase
@@ -152,7 +152,7 @@ export default class Orders extends Component {
     renderPedidos(pedido) {
 
         if (pedido.date_shipment === '') {
-            console.log("La fecha de envío es: " + pedido.date_shipment)
+            // console.log("La fecha de envío es: " + pedido.date_shipment)
             return(
                 //cada vez que exista un pedido muestra la información
                 // <ListItem
@@ -188,7 +188,7 @@ export default class Orders extends Component {
                 </TouchableOpacity>
             )
         } else {
-            console.log("La fecha de envío es: " + pedido.date_shipment)
+            // console.log("La fecha de envío es: " + pedido.date_shipment)
             return (
                 //cada vez que exista un pedido muestra la información
                 // <ListItem
@@ -266,7 +266,7 @@ export default class Orders extends Component {
         const { loaded, pedidos } = this.state;
         const pedidosReverse = pedidos.reverse();
         if (!loaded) {
-            console.log("No está loaded");
+            // console.log("No está loaded");
             return <PreLoader />;
         }
 

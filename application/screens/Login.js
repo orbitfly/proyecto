@@ -61,15 +61,15 @@ export default class Login extends Component{
     }
 
     login(){
-        console.log("email: " + this.state.name + " y contraseña: " + this.state.passwd);
-            console.log("succes");
+        // console.log("email: " + this.state.name + " y contraseña: " + this.state.passwd);
+            // console.log("succes");
             firebase.auth().signInWithEmailAndPassword(this.state.name, this.state.passwd)
             .then(()=>{
                 // alert("Bienvenido!"); 
                 this.refs.toast.show('BIENVENIDO!',Toast.Duration.long, Toast.Position.bottom);
             })
             .catch((error) => {
-                console.log("Entra aqui");
+                // console.log("Entra aqui");
                 const errorCode = error.code;
                 const errorMessage = error.message;
                 if(errorCode === 'auth/wrong-password'){
@@ -77,7 +77,7 @@ export default class Login extends Component{
                     this.refs.toast.show('CONTRASEÑA INCORRECTA', Toast.Duration.long, Toast.Position.bottom);
                 }else{
                     // alert(errorMessage); 
-                    this.refs.toast.show(errorMessage, Toast.Duration.long, Toast.Position.bottom);
+                    this.refs.toast.show('CONTRASEÑA INCORRECTA', Toast.Duration.long, Toast.Position.bottom);
                 }
             })
             //this.refs.toast.show('BIENVENIDO!',Toast.Duration.long, Toast.Position.bottom);    //poner en pedidos

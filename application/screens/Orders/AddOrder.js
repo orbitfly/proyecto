@@ -165,7 +165,7 @@ export default class AddOrder extends Component {
                 // This callback will be triggered exactly two times, unless there are
                 // fewer than two dinosaurs stored in the Database. It will also get fired
                 // for every new, heavier dinosaur that gets added to the data set.
-                console.log(snapshot.key);
+                // console.log(snapshot.key);
                 nombrePedido = snapshot.key
             });
             var numPedido = 'P0000001';
@@ -176,7 +176,7 @@ export default class AddOrder extends Component {
                 nombrePedido = "P" + String(numPedido).padStart(7, "0")
             }
 
-            console.log("nombrePedido: " + nombrePedido)
+            // console.log("nombrePedido: " + nombrePedido)
             var currentDate = new Date();
             var fecha = String(currentDate.getDate()).padStart(2, "0") + '/' + String((currentDate.getMonth() + 1)).padStart(2, "0") + '/' + (currentDate.getFullYear()) +
                 ' ' + String(currentDate.getHours()).padStart(2, "0") + ':' + String(currentDate.getMinutes()).padStart(2, "0");
@@ -190,10 +190,10 @@ export default class AddOrder extends Component {
                 qty_total: this.state.pedido.quantity
             }).then((data) => {
                 //success callback
-                console.log('data ', data)
+                // console.log('data ', data)
             }).catch((error) => {
                 //error callback
-                console.log('error ', error)
+                // console.log('error ', error)
                 this.state.saveInProcess = false;
             })
             // 2. añadir las lineas .
@@ -204,13 +204,13 @@ export default class AddOrder extends Component {
                         quantity: element.cant
                     }).then((data) => {
                         //success callback
-                        console.log('data_line ', data)
+                        // console.log('data_line ', data)
                         this.props.navigation.navigate('ListOrder');
 
 
                     }).catch((error) => {
                         //error callback
-                        console.log('error_line ', error)
+                        // console.log('error_line ', error)
                         this.state.saveInProcess = false;
                     })
                 }

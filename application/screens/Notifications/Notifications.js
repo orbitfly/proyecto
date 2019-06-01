@@ -27,8 +27,6 @@ export default class Notifications extends Component {
         const { search } = this.state;
 
         if (!search) {
-            //referencia base datos firebase
-            console.log('id user: ' + this.userId);
             this.refOrders = firebase.database().ref().child('notifications/' + this.userId);
         } else {
             //refernecia base datos firebase
@@ -105,9 +103,7 @@ export default class Notifications extends Component {
     }
 
     renderNotificaciones(notificacion) {
-        console.log("Notificación: " + notificacion.id)
         if (!notificacion.read) {
-            console.log("READ: " + notificacion.read)
             return (
                 //cada vez que exista un notificacion muestra la información
                 // <ListItem
@@ -221,8 +217,6 @@ export default class Notifications extends Component {
         const { loaded, notificaciones } = this.state;
         const notificacionesReverse = notificaciones.reverse();
         if (!loaded) {
-            console.log("No está loaded");
-            console.log("se queda en el preloader de notificaciones")
             return <PreLoader />;
         }
 
